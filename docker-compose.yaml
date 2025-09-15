@@ -1,0 +1,12 @@
+services:
+  db:
+    image: mysql
+    container_name: to-do-db
+    env_file: db.env
+    ports:
+      - "3306:3306"
+    volumes:
+      - data:/var/lib/mysql
+
+volumes:
+  data:
