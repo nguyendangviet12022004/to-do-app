@@ -8,5 +8,12 @@ services:
     volumes:
       - data:/var/lib/mysql
 
+  mail:
+    image: maildev/maildev
+    container_name: maildev
+    ports:
+      - "1025:1025"
+      - "1080:1080"
+
 volumes:
   data:

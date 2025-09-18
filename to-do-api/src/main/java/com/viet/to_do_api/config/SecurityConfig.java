@@ -22,6 +22,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(
                         req -> req.requestMatchers("/auth/**").permitAll()
+                                .requestMatchers("/test/**").permitAll()
                                 .anyRequest().authenticated());
 
         return http.build();
