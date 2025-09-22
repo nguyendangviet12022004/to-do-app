@@ -9,6 +9,7 @@ import com.viet.to_do_api.constant.AuthorityName;
 import com.viet.to_do_api.dto.auth.RegisterRequest;
 import com.viet.to_do_api.entity.Account;
 import com.viet.to_do_api.entity.Authority;
+import com.viet.to_do_api.exception.auth.EmailExistsException;
 import com.viet.to_do_api.mapper.AccountMapper;
 import com.viet.to_do_api.repository.AccountRepository;
 import com.viet.to_do_api.repository.AuthorityRepository;
@@ -34,6 +35,12 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void register(RegisterRequest request) {
+
+        // check exist account email
+        if (accountRepository.existsByEmail(request.getEmail())) {
+            throw new EmailExistsException(String.format("The account with email %s is exists", request.getEmail()));
+        }
+
         Account account = accountMapper.toAccount(request);
 
         // default role for all user is user
