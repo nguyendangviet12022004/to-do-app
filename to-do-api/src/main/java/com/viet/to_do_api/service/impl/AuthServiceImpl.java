@@ -46,6 +46,7 @@ public class AuthServiceImpl implements AuthService {
         accountRepository.save(account);
 
         // todo send email to active account
+
     }
 
 }
