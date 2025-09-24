@@ -1,0 +1,40 @@
+package com.viet.to_do_api.entity;
+
+import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.CreatedDate;
+
+import com.viet.to_do_api.constant.TokenCodeType;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.Builder;
+import lombok.Data;
+
+@Entity
+@Data
+@Builder
+public class Token {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer Id;
+
+    private String code;
+
+    @Enumerated(EnumType.STRING)
+    private TokenCodeType type;
+
+    private Account account;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    private LocalDateTime expiredAt;
+
+    private LocalDateTime validatedAt;
+}
