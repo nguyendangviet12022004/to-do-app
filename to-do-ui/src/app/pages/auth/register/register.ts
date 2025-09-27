@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RegisterRequest } from '../../../models/auth/register.request';
 import { passwordsMatchValidator } from '../../../validators/passwords-match.validator.directive';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -11,6 +12,8 @@ import { passwordsMatchValidator } from '../../../validators/passwords-match.val
 })
 export class Register {
   private fb = new FormBuilder()
+  private authService = inject(AuthService)
+  errorMessage = ""
 
  
 
@@ -46,6 +49,17 @@ export class Register {
       password: this.newPassword.value ?? ""
     }
 
-    console.log(request)
+    this.authService.register(request).subscribe(
+      {
+        next:(value) => {
+          console.log(value)
+          // todo redriect to login 
+        },
+        error: (err) => {
+            console.log(err)
+        },
+      }
+    )
+    
   }
 }

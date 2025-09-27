@@ -12,6 +12,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Data;
 
@@ -29,6 +30,7 @@ public class Token {
     @Enumerated(EnumType.STRING)
     private TokenCodeType type;
 
+    @ManyToOne
     private Account account;
 
     @CreatedDate
