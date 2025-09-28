@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 
+import com.viet.to_do_api.constant.ExceptionCode;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,4 +20,5 @@ public class ExceptionResponse {
     private HttpStatus status;
     private String path;
     private LocalDateTime timestamp;
+    private ExceptionCode code;
 }

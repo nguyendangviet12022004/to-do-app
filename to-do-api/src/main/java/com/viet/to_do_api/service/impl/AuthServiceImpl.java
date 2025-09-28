@@ -14,6 +14,7 @@ import com.viet.to_do_api.mapper.AccountMapper;
 import com.viet.to_do_api.repository.AccountRepository;
 import com.viet.to_do_api.repository.AuthorityRepository;
 import com.viet.to_do_api.service.AuthService;
+import com.viet.to_do_api.service.string;
 
 import lombok.RequiredArgsConstructor;
 
@@ -54,6 +55,11 @@ public class AuthServiceImpl implements AuthService {
 
         // todo send email to active account
 
+    }
+
+    @Override
+    public boolean checkExistEmail(String email) {
+        return this.accountRepository.existsByEmail(email);
     }
 
 }
