@@ -3,6 +3,8 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RegisterRequest } from '../../../models/auth/register.request';
 import { passwordsMatchValidator } from '../../../validators/passwords-match.validator.directive';
 import { AuthService } from '../../../services/auth.service';
+import { Router } from '@angular/router';
+import { EmailExistsValidator } from '../../../validators/email-exists.validator.directive';
 
 @Component({
   selector: 'app-register',
@@ -13,12 +15,20 @@ import { AuthService } from '../../../services/auth.service';
 export class Register {
   private fb = new FormBuilder()
   private authService = inject(AuthService)
+  private router = inject(Router)
+  private emailExistsValidator = inject(EmailExistsValidator)
+
+
   errorMessage = ""
 
  
 
   registerForm = this.fb.group({
-    email: ["",[Validators.email,Validators.required]],
+    email: ["", {
+      validators: [Validators.required, Validators.email],
+      asyncValidators: [this.emailExistsValidator.validate.bind(this.emailExistsValidator)],
+      updateOn: 'blur'  
+    }],
     password: this.fb.group({
       newPassword: ["",[Validators.required, Validators.minLength(8)]],
       confirmPassword: ["", [Validators.required]]

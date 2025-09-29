@@ -13,4 +13,8 @@ export class AuthService {
   register(request: RegisterRequest): Observable<any>{
     return this.httpClient.post(`${environment.apiUrl}/auth/register`,request)
   }
+
+  checkEmailExists(email: string) :Observable<boolean>{
+    return this.httpClient.get<boolean>(`${environment.apiUrl}/auth/check-email?email=${email}`)
+  }
 }

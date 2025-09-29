@@ -19,7 +19,9 @@
       <p class="text-danger">The email is reuqired</p>
       } @else if (email.hasError("email")) {
       <p class="text-danger">Invalid email format</p>
-      } }
+      } @else if(email.hasError("emailexists")){
+      <p class="text-danger">This email is exists</p>
+      }}
     </div>
 
     <!--password-->
