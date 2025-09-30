@@ -9,4 +9,6 @@ public interface MailService {
 
     void sendHtmlMail(String to, String subject, String htmlTemplate, Map<String, Object> templateModel)
             throws MessagingException;
+
+    void sendActivateCodeMail(String to, String code) throws MessagingException;
 }

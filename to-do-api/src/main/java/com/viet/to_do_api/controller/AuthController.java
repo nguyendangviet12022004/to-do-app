@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.viet.to_do_api.dto.auth.RegisterRequest;
 import com.viet.to_do_api.service.AuthService;
 
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -34,6 +35,12 @@ public class AuthController {
     @GetMapping("/check-email")
     public ResponseEntity<Boolean> checkExistEmail(@RequestParam String email) {
         return ResponseEntity.ok(this.authService.checkExistEmail(email));
+    }
+
+    @GetMapping("/activate-account-code")
+    public ResponseEntity<?> getMethodName(@RequestParam String email) throws MessagingException {
+        authService.getActivateAccountCode(email);
+        return ResponseEntity.ok().build();
     }
 
 }

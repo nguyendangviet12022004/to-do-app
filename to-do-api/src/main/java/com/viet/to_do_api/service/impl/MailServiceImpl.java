@@ -5,10 +5,12 @@ import java.util.Map;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import com.viet.to_do_api.constant.TemplateName;
 import com.viet.to_do_api.service.MailService;
 
 import jakarta.mail.MessagingException;
@@ -23,6 +25,7 @@ public class MailServiceImpl implements MailService {
     private final SpringTemplateEngine templateEngine;
 
     @Override
+    @Async
     public void sendSimpleMail(String to, String subject, String body) {
 
         var message = new SimpleMailMessage();
@@ -38,6 +41,7 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
+    @Async
     public void sendHtmlMail(String to, String subject, String htmlTemplate, Map<String, Object> templateModel)
             throws MessagingException {
 
@@ -59,6 +63,13 @@ public class MailServiceImpl implements MailService {
         helper.setText(htmlContent, true);
 
         this.emailSender.send(message);
+    }
+
+    @Override
+    @Async
+    public void sendActivateCodeMail(String to, String code) throws MessagingException {
+        Map<String, Object> templateModel = Map.of("code", code);
+        sendHtmlMail(to, "Activate account code", TemplateName.ACTIVATE_ACCOUNT_MAIL, templateModel);
     }
 
 }
