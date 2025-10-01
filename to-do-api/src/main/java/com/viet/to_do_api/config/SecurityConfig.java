@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -16,6 +17,15 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private static final String[] AUTH_WHITELIST = {
+            "/auth/**",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/v2/api-docs",
+            "/swagger-ui.html"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -25,12 +35,15 @@ public class SecurityConfig {
         // filter request
         http
                 .authorizeHttpRequests(
-                        req -> req.requestMatchers("/auth/**").permitAll()
-                                .requestMatchers("/test/**").permitAll()
+                        req -> req.requestMatchers(AUTH_WHITELIST).permitAll()
                                 .anyRequest().authenticated())
 
+                // cors
                 .cors((cors) -> cors
-                        .configurationSource(apiConfigurationSource()));
+                        .configurationSource(apiConfigurationSource()))
+
+                // session
+                .sessionManagement(ss -> ss.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }

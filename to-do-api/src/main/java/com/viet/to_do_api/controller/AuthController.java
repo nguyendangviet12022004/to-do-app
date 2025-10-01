@@ -4,8 +4,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.viet.to_do_api.dto.auth.RegisterRequest;
+import com.viet.to_do_api.dto.exception.ExceptionResponse;
 import com.viet.to_do_api.service.AuthService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +27,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RestController
 @RequestMapping("auth")
 @RequiredArgsConstructor
+@Tag(name = "Authentication controller", description = "Controller for authentication function(login, regsiter, activate, etc)")
 public class AuthController {
 
     private final AuthService authService;
 
     @PostMapping("/register")
+    @Operation(summary = "Register new account api", description = "Rest api to create new account")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "HTTP status CREATED"),
+            @ApiResponse(responseCode = "400", description = "Email is exsits or method parametter is invalid", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
         authService.register(request);
         return ResponseEntity
@@ -32,11 +45,19 @@ public class AuthController {
                 .build();
     }
 
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Email is exsist or not", content = @Content(contentSchema = @Schema(implementation = Boolean.class))),
+            @ApiResponse(responseCode = "400", description = "Email is not exsits or method parametter is invalid", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
     @GetMapping("/check-email")
     public ResponseEntity<Boolean> checkExistEmail(@RequestParam String email) {
         return ResponseEntity.ok(this.authService.checkExistEmail(email));
     }
 
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Send code by email"),
+            @ApiResponse(responseCode = "400", description = "Email is not exsits or method parametter is invalid", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
     @GetMapping("/activate-account-code")
     public ResponseEntity<?> getMethodName(@RequestParam String email) throws MessagingException {
         authService.getActivateAccountCode(email);

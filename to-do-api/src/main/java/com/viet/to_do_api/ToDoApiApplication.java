@@ -7,9 +7,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 import com.viet.to_do_api.mapper.AccountMapper;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+
 @SpringBootApplication
 @EnableAsync
-
+@OpenAPIDefinition(info = @Info(title = "To do app api", contact = @Contact(name = "Nguyen Dang Viet", email = "viet.ngdnag.dev@gmail.com"), version = "v1.0.1"))
 public class ToDoApiApplication {
 
 	public static void main(String[] args) {
