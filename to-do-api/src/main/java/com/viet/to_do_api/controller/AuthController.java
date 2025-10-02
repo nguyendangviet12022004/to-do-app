@@ -3,6 +3,7 @@ package com.viet.to_do_api.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.viet.to_do_api.dto.auth.ActivateAccountRequest;
 import com.viet.to_do_api.dto.auth.RegisterRequest;
 import com.viet.to_do_api.dto.exception.ExceptionResponse;
 import com.viet.to_do_api.service.AuthService;
@@ -49,18 +50,27 @@ public class AuthController {
             @ApiResponse(responseCode = "200", description = "Email is exsist or not", content = @Content(contentSchema = @Schema(implementation = Boolean.class))),
             @ApiResponse(responseCode = "400", description = "Email is not exsits or method parametter is invalid", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
+    @Operation(summary = "Check if email exists")
     @GetMapping("/check-email")
     public ResponseEntity<Boolean> checkExistEmail(@RequestParam String email) {
         return ResponseEntity.ok(this.authService.checkExistEmail(email));
     }
 
+    @Operation(summary = "Get activated code")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Send code by email"),
             @ApiResponse(responseCode = "400", description = "Email is not exsits or method parametter is invalid", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @GetMapping("/activate-account-code")
-    public ResponseEntity<?> getMethodName(@RequestParam String email) throws MessagingException {
+    public ResponseEntity<?> getActivateAccountCode(@RequestParam String email) throws MessagingException {
         authService.getActivateAccountCode(email);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Activate account by code")
+    @PostMapping("/activate-account")
+    public ResponseEntity<?> activateAccount(@Valid @RequestBody ActivateAccountRequest request) {
+        this.authService.activateAccount(request);
         return ResponseEntity.ok().build();
     }
 

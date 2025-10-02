@@ -1,5 +1,7 @@
 package com.viet.to_do_api.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -7,5 +9,5 @@ import com.viet.to_do_api.entity.Token;
 
 @Repository
 public interface TokenRepository extends JpaRepository<Token, Integer> {
-
+    Optional<Token> findByCode(String code);
 }

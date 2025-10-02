@@ -39,4 +39,6 @@ public class Token {
     private LocalDateTime expiredAt;
 
     private LocalDateTime validatedAt;
+
+    private boolean isValidated;
 }

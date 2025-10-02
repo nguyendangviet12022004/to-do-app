@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.viet.to_do_api.constant.TokenCodeType;
 import com.viet.to_do_api.entity.Account;
 import com.viet.to_do_api.entity.Token;
+import com.viet.to_do_api.exception.auth.TokenExpiredException;
+import com.viet.to_do_api.exception.auth.TokenNotExistsException;
 import com.viet.to_do_api.repository.TokenRepository;
 import com.viet.to_do_api.service.TokenService;
 
@@ -40,6 +42,26 @@ public class TokenServiceImpl implements TokenService {
 
         var savedToken = tokenRepository.save(token);
         return savedToken.getCode();
+    }
+
+    @Override
+    public boolean validateToken(String code) {
+        Token token = tokenRepository.findByCode(code)
+                .orElseThrow(() -> new TokenNotExistsException("Token is not exsits"));
+
+        // if token is expired
+        if (LocalDateTime.now().isAfter(token.getExpiredAt())) {
+            throw new TokenExpiredException("Token is expired");
+        }
+
+        // update token
+        token.setValidatedAt(LocalDateTime.now());
+        token.setValidated(true);
+
+        // save to db
+        this.tokenRepository.save(token);
+
+        return true;
     }
 
 }

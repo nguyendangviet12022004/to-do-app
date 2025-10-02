@@ -19,6 +19,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.viet.to_do_api.constant.ExceptionCode;
 import com.viet.to_do_api.dto.exception.ExceptionResponse;
 import com.viet.to_do_api.exception.auth.EmailExistsException;
+import com.viet.to_do_api.exception.auth.TokenExpiredException;
+import com.viet.to_do_api.exception.auth.TokenNotExistsException;
 
 import lombok.var;
 
@@ -43,6 +45,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 else if (ex instanceof MethodArgumentNotValidException) {
                         response.setStatus(HttpStatus.BAD_REQUEST);
                         response.setCode(ExceptionCode.MethodArgumentNotValid);
+                }
+
+                // token invalid
+                else if (ex instanceof TokenNotExistsException) {
+                        response.setStatus(HttpStatus.BAD_REQUEST);
+                        response.setCode(ExceptionCode.TOKEN_NOT_EXISTS);
+                }
+
+                // token expired
+                else if (ex instanceof TokenExpiredException) {
+                        response.setStatus(HttpStatus.BAD_REQUEST);
+                        response.setCode(ExceptionCode.TOKEN_EXPIRED);
                 }
 
                 return response;
