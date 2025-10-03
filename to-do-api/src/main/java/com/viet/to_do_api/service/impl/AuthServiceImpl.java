@@ -2,17 +2,21 @@ package com.viet.to_do_api.service.impl;
 
 import java.util.List;
 
+import org.apache.coyote.BadRequestException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.viet.to_do_api.constant.AuthorityName;
 import com.viet.to_do_api.constant.TokenCodeType;
+import com.viet.to_do_api.dto.auth.ActivateAccountRequest;
 import com.viet.to_do_api.dto.auth.RegisterRequest;
+import com.viet.to_do_api.dto.auth.TokenResponse;
 import com.viet.to_do_api.entity.Account;
 import com.viet.to_do_api.entity.Authority;
 import com.viet.to_do_api.exception.auth.EmailExistsException;
 import com.viet.to_do_api.exception.auth.EmailNotFoundException;
 import com.viet.to_do_api.mapper.AccountMapper;
+import com.viet.to_do_api.mapper.TokenMapper;
 import com.viet.to_do_api.repository.AccountRepository;
 import com.viet.to_do_api.repository.AuthorityRepository;
 import com.viet.to_do_api.service.AuthService;
@@ -79,6 +83,22 @@ public class AuthServiceImpl implements AuthService {
         String code = this.tokenService.generateToken(account.getId(), 60, TokenCodeType.ACTIVATE_ACCOUNT);
 
         mailService.sendActivateCodeMail(email, code);
+    }
+
+    @Override
+    public void activateAccount(ActivateAccountRequest request) {
+        String code = request.code();
+
+        this.tokenService.validateToken(code);
+
+        TokenResponse response = this.tokenService.getTokenByCode(code);
+
+        // find account and update active
+        Integer id = response.getAccountId();
+        Account account = this.accountRepository.findById(id).orElseThrow(() -> new RuntimeException("Id not found"));
+        account.setActive(true);
+
+        this.accountRepository.save(account);
     }
 
 }
