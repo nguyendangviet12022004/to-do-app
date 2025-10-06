@@ -6,7 +6,7 @@ import com.viet.to_do_api.dto.auth.RegisterRequest;
 import jakarta.mail.MessagingException;
 
 public interface AuthService {
-    public void register(RegisterRequest request);
+    public void register(RegisterRequest request) throws Exception;
 
     public boolean checkExistEmail(String email);
 

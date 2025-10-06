@@ -39,7 +39,7 @@ public class AuthController {
             @ApiResponse(responseCode = "201", description = "HTTP status CREATED"),
             @ApiResponse(responseCode = "400", description = "Email is exsits or method parametter is invalid", content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) throws Exception {
         authService.register(request);
         return ResponseEntity
                 .status(HttpStatus.CREATED.value())

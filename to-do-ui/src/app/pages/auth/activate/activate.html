@@ -1,0 +1,30 @@
+@if (codeSent()) {
+<div class="container-fluid">
+  <form #activateForm="ngForm" (ngSubmit)="onActivate()">
+    <div class="mb-3">
+      <label for="code" class="form-label">Code</label>
+      <input
+        type="email"
+        class="form-control"
+        id="code"
+        name="code"
+        required
+        aria-describedby="codeHelp"
+        [(ngModel)]="codeRequest.code"
+        #code="ngModel"
+      />
+      @if (code.invalid && (code.dirty || code.touched)){
+      <div class="text-danger">Code is required.</div>
+      }
+
+      <div id="emailHelp" class="form-text">
+        Don't share your code with anyone else.
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+
+}@else {
+<h2>Enter email</h2>
+}

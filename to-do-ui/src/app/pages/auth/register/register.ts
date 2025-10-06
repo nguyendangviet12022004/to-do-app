@@ -62,8 +62,7 @@ export class Register {
     this.authService.register(request).subscribe(
       {
         next:(value) => {
-          console.log(value)
-          // todo redriect to login 
+          this.router.navigate(['/auth/activate', {codeSent: true}])
         },
         error: (err) => {
             console.log(err)
