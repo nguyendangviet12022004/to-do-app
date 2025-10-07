@@ -1,8 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, Signal, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ActivateRequest } from '../../../models/auth/activate.request';
 import { AuthService } from '../../../services/auth.service';
+import { errorCode } from '../../../constants/ErrorCode';
 
 
 @Component({
@@ -18,6 +19,7 @@ export class Activate {
   codeRequest: ActivateRequest = {
     code: ''
   }
+errorMessage= signal('');
 
   constructor(){
     this.route.params.subscribe((params) => {
@@ -31,7 +33,17 @@ export class Activate {
         console.log(value)
       },
       error: (err) => {
-        console.log(err)
+        console.log(err.error.code)
+        switch(err.error.code){
+          case errorCode.TOKEN_NOT_EXISTS:
+            
+            this.errorMessage.set("The activation code is invalid.")
+            break;
+          case errorCode.TOKEN_EXPIRED:
+            this.errorMessage.set("The activation code has expired");
+            this.codeSent.set(false)
+            break;
+        }
       }
     })
   }

@@ -44,7 +44,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 // method arg not valid
                 else if (ex instanceof MethodArgumentNotValidException) {
                         response.setStatus(HttpStatus.BAD_REQUEST);
-                        response.setCode(ExceptionCode.MethodArgumentNotValid);
+                        response.setCode(ExceptionCode.METHOD_ARGUMENT_NOT_VALID);
                 }
 
                 // token invalid

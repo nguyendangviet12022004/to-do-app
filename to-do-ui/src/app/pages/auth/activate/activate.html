@@ -1,4 +1,8 @@
-@if (codeSent()) {
+@if (errorMessage()) {
+<div class="alert alert-danger" role="alert">
+  {{ errorMessage() }}
+</div>
+} @if (codeSent()) {
 <div class="container-fluid">
   <form #activateForm="ngForm" (ngSubmit)="onActivate()">
     <div class="mb-3">
