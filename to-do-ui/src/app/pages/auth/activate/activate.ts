@@ -19,18 +19,23 @@ export class Activate {
   codeRequest: ActivateRequest = {
     code: ''
   }
-errorMessage= signal('');
+  email = signal('');
+
+  errorMessage= signal('');
 
   constructor(){
-    this.route.params.subscribe((params) => {
-      this.codeSent.set(params['codeSent']=='true' || true);
+    this.route.queryParams.subscribe((params) => {
+      console.log(params)
+      this.codeSent.set(params['codeSent']=='true' || false);
+      console.log(this.codeSent())
     });
   }
 
   onActivate(){
     this.authService.activateAcocunt(this.codeRequest).subscribe({
       next: (value) => {
-        console.log(value)
+        // to do redirect to login page
+        
       },
       error: (err) => {
         console.log(err.error.code)
@@ -44,6 +49,19 @@ errorMessage= signal('');
             this.codeSent.set(false)
             break;
         }
+      }
+    })
+  }
+
+  onGetActivateCode(){
+    this.authService.getActivateCode(this.email()).subscribe({
+      next: (value) => {
+        this.codeSent.set(true)
+        this.errorMessage.set("")
+      },
+      error: (err) => {
+        console.log(err)
+        this.errorMessage.set(err.error.message); 
       }
     })
   }

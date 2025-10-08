@@ -22,4 +22,9 @@ export class AuthService {
   activateAcocunt(ActivateRequest: ActivateRequest): Observable<any>{
     return this.httpClient.post(`${environment.apiUrl}/auth/activate-account`, ActivateRequest)
   }
+
+  getActivateCode(email: string): Observable<any>{
+    let params:HttpParams = new HttpParams().set('email', email);
+    return this.httpClient.get(`${environment.apiUrl}/auth/activate-account-code`, {params: params})
+  }
 }

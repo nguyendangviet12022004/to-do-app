@@ -30,5 +30,29 @@
 </div>
 
 }@else {
-<h2>Enter email</h2>
+<form #getActivateCodeForm="ngForm" (ngSubmit)="onGetActivateCode()">
+  <div class="mb-3">
+    <label for="email" class="form-label">Email address</label>
+    <input
+      type="email"
+      class="form-control"
+      id="email"
+      name="email"
+      aria-describedby="emailHelp"
+      [(ngModel)]="email"
+      required="true"
+      email="true"
+      #emailModel="ngModel"
+    />
+    <div id="emailHelp" class="form-text">
+      We'll never share your email with anyone else.
+    </div>
+    @if (emailModel.invalid && (emailModel.dirty || emailModel.touched)){
+    <div class="text-danger">Please enter valid email.</div>
+    }
+  </div>
+  <button type="submit" class="btn btn-primary" [disabled]="emailModel.invalid">
+    Submit
+  </button>
+</form>
 }
