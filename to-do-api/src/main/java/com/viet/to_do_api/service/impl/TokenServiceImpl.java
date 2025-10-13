@@ -6,7 +6,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.viet.to_do_api.constant.TokenCodeType;
-import com.viet.to_do_api.dto.auth.TokenResponse;
+import com.viet.to_do_api.dto.auth.response.TokenResponse;
 import com.viet.to_do_api.entity.Account;
 import com.viet.to_do_api.entity.Token;
 import com.viet.to_do_api.exception.auth.TokenExpiredException;

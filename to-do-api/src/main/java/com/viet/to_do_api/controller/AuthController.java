@@ -3,8 +3,9 @@ package com.viet.to_do_api.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.viet.to_do_api.dto.auth.ActivateAccountRequest;
-import com.viet.to_do_api.dto.auth.RegisterRequest;
+import com.viet.to_do_api.dto.auth.request.ActivateAccountRequest;
+import com.viet.to_do_api.dto.auth.request.LoginRequest;
+import com.viet.to_do_api.dto.auth.request.RegisterRequest;
 import com.viet.to_do_api.dto.exception.ExceptionResponse;
 import com.viet.to_do_api.service.AuthService;
 
@@ -72,6 +73,13 @@ public class AuthController {
     public ResponseEntity<?> activateAccount(@Valid @RequestBody ActivateAccountRequest request) {
         this.authService.activateAccount(request);
         return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Login by email and password")
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
+        var response = this.authService.login(request);
+        return ResponseEntity.ok(response);
     }
 
 }
