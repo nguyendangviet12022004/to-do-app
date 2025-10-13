@@ -1,4 +1,4 @@
-package com.viet.to_do_api.config;
+package com.viet.to_do_api.config.security;
 
 import java.util.Collection;
 

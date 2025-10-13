@@ -2,14 +2,19 @@ package com.viet.to_do_api.service.impl;
 
 import java.util.List;
 
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.viet.to_do_api.constant.AuthorityName;
 import com.viet.to_do_api.constant.TokenCodeType;
-import com.viet.to_do_api.dto.auth.ActivateAccountRequest;
-import com.viet.to_do_api.dto.auth.RegisterRequest;
-import com.viet.to_do_api.dto.auth.TokenResponse;
+import com.viet.to_do_api.dto.auth.request.ActivateAccountRequest;
+import com.viet.to_do_api.dto.auth.request.LoginRequest;
+import com.viet.to_do_api.dto.auth.request.RegisterRequest;
+import com.viet.to_do_api.dto.auth.response.LoginResponse;
+import com.viet.to_do_api.dto.auth.response.TokenResponse;
 import com.viet.to_do_api.entity.Account;
 import com.viet.to_do_api.entity.Authority;
 import com.viet.to_do_api.exception.auth.EmailExistsException;
@@ -18,6 +23,7 @@ import com.viet.to_do_api.mapper.AccountMapper;
 import com.viet.to_do_api.repository.AccountRepository;
 import com.viet.to_do_api.repository.AuthorityRepository;
 import com.viet.to_do_api.service.AuthService;
+import com.viet.to_do_api.service.JwtService;
 import com.viet.to_do_api.service.MailService;
 import com.viet.to_do_api.service.TokenService;
 
@@ -34,6 +40,8 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
     private final MailService mailService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
     private Authority retiriveAuthority(AuthorityName name) {
 
@@ -99,6 +107,22 @@ public class AuthServiceImpl implements AuthService {
         account.setActive(true);
 
         this.accountRepository.save(account);
+    }
+
+    @Override
+    public LoginResponse login(LoginRequest request) {
+        Authentication auth = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
+
+        if (auth.isAuthenticated()) {
+            String accessToken = jwtService.genereateAccessToken(request.email(),
+                    auth.getAuthorities());
+
+            String refreshToken = jwtService.genereateRefreshToken(request.email(),
+                    auth.getAuthorities());
+            return new LoginResponse(accessToken, refreshToken);
+        }
+        return null;
     }
 
 }

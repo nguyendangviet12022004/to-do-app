@@ -3,7 +3,7 @@ package com.viet.to_do_api.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.viet.to_do_api.dto.auth.TokenResponse;
+import com.viet.to_do_api.dto.auth.response.TokenResponse;
 import com.viet.to_do_api.entity.Token;
 
 @Mapper(componentModel = "spring")

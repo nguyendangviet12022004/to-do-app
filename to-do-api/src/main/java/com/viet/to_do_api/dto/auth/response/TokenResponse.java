@@ -1,4 +1,4 @@
-package com.viet.to_do_api.dto.auth;
+package com.viet.to_do_api.dto.auth.response;
 
 import com.viet.to_do_api.constant.TokenCodeType;
 

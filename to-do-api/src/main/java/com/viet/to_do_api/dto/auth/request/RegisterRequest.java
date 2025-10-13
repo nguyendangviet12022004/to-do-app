@@ -1,4 +1,4 @@
-package com.viet.to_do_api.dto.auth;
+package com.viet.to_do_api.dto.auth.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
