@@ -19,11 +19,21 @@ services:
     build: ./to-do-api
     container_name: to-do-api
     env_file: api.env
-    ports:
-      - "8080:8080"
+    # ports:
+    #   - "8080:8080"
     depends_on:
       - db
       - mail
+
+  nginx:
+    image: nginx:latest
+    container_name: to-do-nginx
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./nginx/config:/etc/nginx/
+    depends_on:
+      - api
 
 volumes:
   data:
