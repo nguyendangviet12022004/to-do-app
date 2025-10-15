@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -55,6 +57,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 else if (ex instanceof TokenExpiredException) {
                         response.setStatus(HttpStatus.BAD_REQUEST);
                         response.setCode(ExceptionCode.TOKEN_EXPIRED);
+                } else if (ex instanceof BadCredentialsException) {
+                        response.setStatus(HttpStatus.BAD_REQUEST);
+                        response.setCode(ExceptionCode.BAD_CREDENTIALS);
+                } else if (ex instanceof DisabledException) {
+                        response.setStatus(HttpStatus.BAD_REQUEST);
+                        response.setCode(ExceptionCode.DISABLED_ACCOUNT);
                 }
 
                 return response;

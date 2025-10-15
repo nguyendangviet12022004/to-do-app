@@ -38,4 +38,8 @@ public class AccountUserDetails implements UserDetails {
         return account.getEmail();
     }
 
+    @Override
+    public boolean isEnabled() {
+        return account.isActive();
+    }
 }
