@@ -29,7 +29,7 @@ export class Login {
         if(err.error?.code === "DISABLED_ACCOUNT"){
           return this.authService.getActivateCode(this.loginRequest.email).pipe(
             switchMap(() => {
-              this.router.navigate(['/auth/activate'], {queryParams: {email: this.loginRequest.email}});
+              this.router.navigate(['/auth/activate'], {queryParams: {codeSent: true}});
               return of(null);
             })
           )

@@ -1,4 +1,7 @@
 <div class="container-fluid">
+  @if (errorMessage()) {
+  <p class="text-danger">{{ errorMessage() }}</p>
+  }
   <form #loginForm="ngForm" (ngSubmit)="onLogin()">
     <div class="mb-3">
       <label for="" class="form-label">Email address</label>
