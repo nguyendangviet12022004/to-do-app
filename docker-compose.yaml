@@ -30,8 +30,10 @@ services:
     container_name: to-do-nginx
     ports:
       - "8080:8080"
+      - "443:443"
     volumes:
       - ./nginx/config:/etc/nginx/
+      - ./nginx/ssl:/etc/nginx/ssl/
     depends_on:
       - api
 
