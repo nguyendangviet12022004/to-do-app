@@ -3,6 +3,7 @@ package com.viet.to_do_api.service;
 import java.util.Collection;
 import java.util.function.Function;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import io.jsonwebtoken.Claims;
@@ -15,17 +16,15 @@ public interface JwtService {
 
     public String genereateRefreshToken(String username, Collection<? extends GrantedAuthority> authorities);
 
-    public boolean validateToken(String token, String secretKey);
+    public Claims extractAllClaims(String token, String secretKey);
 
-    public boolean validateAccessToken(String token);
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver, String secretKey);
 
-    public boolean validateRefreshToken(String token);
+    public <T> T extractAccessTokenClaim(String token, Function<Claims, T> claimsResolver);
 
-    public Claims getAllClaims(String token, String secretKey);
+    public <T> T extractRefreshTokenClaim(String token, Function<Claims, T> claimsResolver);
 
-    public <T> T getClaim(String token, Function<String, T> claimsResolver, String secretKey);
+    public String refreshToken(String refreshToken);
 
-    public <T> T getAccessTokenClaim(String token, Function<String, T> claimsResolver);
-
-    public <T> T getRefreshTokenClaim(String token, Function<String, T> claimsResolver);
+    public Authentication extractAuthentication(String token);
 }

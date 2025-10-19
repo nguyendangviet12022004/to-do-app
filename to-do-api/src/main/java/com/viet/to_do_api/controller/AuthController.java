@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.viet.to_do_api.dto.auth.request.ActivateAccountRequest;
 import com.viet.to_do_api.dto.auth.request.LoginRequest;
 import com.viet.to_do_api.dto.auth.request.RegisterRequest;
+import com.viet.to_do_api.dto.auth.request.RefreshTokenRequest;
 import com.viet.to_do_api.dto.exception.ExceptionResponse;
 import com.viet.to_do_api.service.AuthService;
 
@@ -82,4 +83,9 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "Refresh token")
+    @PostMapping("/refresh-token")
+    public ResponseEntity<?> refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
+        return ResponseEntity.ok(authService.refreshToken(request));
+    }
 }

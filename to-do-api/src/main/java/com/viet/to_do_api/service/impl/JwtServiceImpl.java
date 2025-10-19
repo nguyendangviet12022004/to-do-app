@@ -3,11 +3,15 @@ package com.viet.to_do_api.service.impl;
 import java.util.Collection;
 import java.util.Date;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
 
 import com.viet.to_do_api.service.JwtService;
@@ -56,56 +60,63 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public String genereateAccessToken(String username,
             Collection<? extends GrantedAuthority> authorities) {
+
+        String strAuthorities = authorities.stream().map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
         return generateToken(username, accessTokenExpiration, accessTokenSecret, issuer,
-                Jwts.claims().add("authorities", authorities).build());
+                Jwts.claims().add("authorities", strAuthorities).build());
     }
 
     @Override
     public String genereateRefreshToken(String username, Collection<? extends GrantedAuthority> authorities) {
-        return generateToken(username, refreshTokenExpiration, refreshTokenSecret, issuer,
-                Jwts.claims().add("authorities", authorities).build());
+        String strAuthorities = authorities.stream().map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        return generateToken(username, accessTokenExpiration, refreshTokenSecret, issuer,
+                Jwts.claims().add("authorities", strAuthorities).build());
     }
 
     @Override
-    public boolean validateToken(String token, String secretKey) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validateToken'");
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver, String secretKey) {
+
+        Claims claims = extractAllClaims(token, secretKey);
+        return claimsResolver.apply(claims);
+
     }
 
     @Override
-    public boolean validateAccessToken(String token) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validateAccessToken'");
+    public <T> T extractAccessTokenClaim(String token, Function<Claims, T> claimsResolver) {
+        return extractClaim(token, claimsResolver, accessTokenSecret);
     }
 
     @Override
-    public boolean validateRefreshToken(String token) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validateRefreshToken'");
+    public <T> T extractRefreshTokenClaim(String token, Function<Claims, T> claimsResolver) {
+        return extractClaim(token, claimsResolver, refreshTokenSecret);
     }
 
     @Override
-    public <T> T getClaim(String token, Function<String, T> claimsResolver, String secretKey) {
-
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getClaim'");
-    }
-
-    @Override
-    public <T> T getAccessTokenClaim(String token, Function<String, T> claimsResolver) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAccessTokenClaim'");
-    }
-
-    @Override
-    public <T> T getRefreshTokenClaim(String token, Function<String, T> claimsResolver) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRefreshTokenClaim'");
-    }
-
-    @Override
-    public Claims getAllClaims(String token, String secretKey) {
+    public Claims extractAllClaims(String token, String secretKey) {
         return (Claims) Jwts.parser().verifyWith(getSignKey(secretKey)).build().parse(token).getPayload();
     }
 
+    @Override
+    public Authentication extractAuthentication(String token) {
+        String username = extractAccessTokenClaim(token, Claims::getSubject);
+
+        String strAuthorities = extractAccessTokenClaim(token, (claims -> claims.get("authorities", String.class)));
+
+        var authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(strAuthorities);
+        return new UsernamePasswordAuthenticationToken(username, "", authorities);
+    }
+
+    @Override
+    public String refreshToken(String refreshToken) {
+        String username = extractRefreshTokenClaim(refreshToken, Claims::getSubject);
+
+        String strAuthorities = extractRefreshTokenClaim(refreshToken,
+                (claims -> claims.get("authorities", String.class)));
+
+        var authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(strAuthorities);
+
+        return genereateAccessToken(username, authorities);
+    }
 }

@@ -24,4 +24,9 @@ public class TestController {
         mailService.sendHtmlMail("viet.ngdang.dev@gmail.com", "Test html", "mail/activate-code", Map.of("code", 54987));
         return ResponseEntity.ok("Mail sent");
     }
+
+    @GetMapping()
+    public String Hello() {
+        return "";
+    }
 }

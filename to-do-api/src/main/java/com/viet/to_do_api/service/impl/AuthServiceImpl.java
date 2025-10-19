@@ -2,6 +2,7 @@ package com.viet.to_do_api.service.impl;
 
 import java.util.List;
 
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,8 +13,9 @@ import com.viet.to_do_api.constant.AuthorityName;
 import com.viet.to_do_api.constant.TokenCodeType;
 import com.viet.to_do_api.dto.auth.request.ActivateAccountRequest;
 import com.viet.to_do_api.dto.auth.request.LoginRequest;
+import com.viet.to_do_api.dto.auth.request.RefreshTokenRequest;
 import com.viet.to_do_api.dto.auth.request.RegisterRequest;
-import com.viet.to_do_api.dto.auth.response.LoginResponse;
+import com.viet.to_do_api.dto.auth.response.JwtResponse;
 import com.viet.to_do_api.dto.auth.response.TokenResponse;
 import com.viet.to_do_api.entity.Account;
 import com.viet.to_do_api.entity.Authority;
@@ -110,7 +112,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public LoginResponse login(LoginRequest request) {
+    public JwtResponse login(LoginRequest request) {
         Authentication auth = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
 
@@ -120,9 +122,15 @@ public class AuthServiceImpl implements AuthService {
 
             String refreshToken = jwtService.genereateRefreshToken(request.email(),
                     auth.getAuthorities());
-            return new LoginResponse(accessToken, refreshToken);
+            return new JwtResponse(accessToken, refreshToken);
         }
         return null;
+    }
+
+    @Override
+    public JwtResponse refreshToken(RefreshTokenRequest request) {
+        String accessToken = jwtService.refreshToken(request.refreshToken());
+        return new JwtResponse(accessToken, request.refreshToken());
     }
 
 }

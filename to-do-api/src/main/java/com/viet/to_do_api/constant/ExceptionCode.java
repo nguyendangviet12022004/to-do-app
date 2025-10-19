@@ -8,4 +8,6 @@ public enum ExceptionCode {
     TOKEN_EXPIRED,
     DISABLED_ACCOUNT,
     BAD_CREDENTIALS,
+    TOKEN_INVALID,
+    AUTHENTICATION_ERROR,
 }
