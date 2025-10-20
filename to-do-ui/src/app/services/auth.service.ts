@@ -16,6 +16,13 @@ export class AuthService {
   private refreshTokenSignal = signal<string>("");
   private accessTokenSignal = signal<string>("");
 
+  constructor() {
+  const accessToken = localStorage.getItem('access_token') || '';
+  const refreshToken = localStorage.getItem('refresh_token') || '';
+  this.accessTokenSignal.set(accessToken);
+  this.refreshTokenSignal.set(refreshToken);
+}
+
   register(request: RegisterRequest): Observable<any>{
     return this.httpClient.post(`${environment.apiUrl}/auth/register`,request)
   }
@@ -42,6 +49,18 @@ export class AuthService {
     this.refreshTokenSignal.set(refreshToken);
     localStorage.setItem('access_token', accessToken);
     localStorage.setItem('refresh_token', refreshToken);
+  }
+
+  get accessToken(){
+    return this.accessTokenSignal();
+  }
+
+  get refreshToken(){
+    return this.refreshTokenSignal();
+  }
+
+  isAuthenticated(){
+    return !!this.accessTokenSignal();
   }
   
 }
