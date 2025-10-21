@@ -5,7 +5,8 @@ import { RegisterRequest } from '../models/auth/register.request';
 import { Observable } from 'rxjs';
 import { ActivateRequest } from '../models/auth/activate.request';
 import { LoginRequest } from '../models/auth/login.request';
-import { LoginResponse } from '../models/auth/login.response';
+import { JwtResponse } from '../models/auth/login.response';
+import { RefreshTokenRequest } from '../models/auth/refresh-token.request';
 
 @Injectable({
   providedIn: 'root'
@@ -40,9 +41,20 @@ export class AuthService {
     return this.httpClient.get(`${environment.apiUrl}/auth/activate-account-code`, {params: params})
   }
 
-  login(request: LoginRequest): Observable<LoginResponse>{
-    return this.httpClient.post<LoginResponse>(`${environment.apiUrl}/auth/login`, request)
+  login(request: LoginRequest): Observable<JwtResponse>{
+    return this.httpClient.post<JwtResponse>(`${environment.apiUrl}/auth/login`, request)
   }
+  logout(){
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    this.accessTokenSignal.set("")
+    this.refreshTokenSignal.set("")
+  }
+
+  refresh(){
+    return this.httpClient.post<RefreshTokenRequest>(`${environment.apiUrl}/auth/refresh-token`, {refreshToken: this.refreshToken})
+  }
+  
 
   saveTokens(accessToken: string, refreshToken: string): void {
     this.accessTokenSignal.set(accessToken);
