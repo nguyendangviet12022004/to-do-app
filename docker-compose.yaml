@@ -37,5 +37,12 @@ services:
     depends_on:
       - api
 
+  ui:
+    build:
+      context: to-do-ui/.
+    env_file:
+      - ui.env
+    ports:
+      - "8080:8080"
 volumes:
   data:

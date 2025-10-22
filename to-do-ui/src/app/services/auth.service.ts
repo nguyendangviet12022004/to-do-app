@@ -1,12 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { environment } from '../environments/enviroment.dev';
+
 import { RegisterRequest } from '../models/auth/register.request';
 import { Observable } from 'rxjs';
 import { ActivateRequest } from '../models/auth/activate.request';
 import { LoginRequest } from '../models/auth/login.request';
 import { JwtResponse } from '../models/auth/login.response';
 import { RefreshTokenRequest } from '../models/auth/refresh-token.request';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
