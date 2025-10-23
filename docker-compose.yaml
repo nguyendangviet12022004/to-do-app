@@ -15,12 +15,26 @@ services:
       - "1025:1025"
       - "1080:1080"
 
-  api:
+  api-1:
     build: ./to-do-api
-    container_name: to-do-api
+    container_name: to-do-api-1
     env_file: api.env
-    # ports:
-    #   - "8080:8080"
+    depends_on:
+      - db
+      - mail
+
+  api-2:
+    build: ./to-do-api
+    container_name: to-do-api-2
+    env_file: api.env
+    depends_on:
+      - db
+      - mail
+
+  api-3:
+    build: ./to-do-api
+    container_name: to-do-api-3
+    env_file: api.env
     depends_on:
       - db
       - mail
@@ -29,13 +43,15 @@ services:
     image: nginx:latest
     container_name: to-do-nginx
     ports:
-      - "8080:8080"
+      # - "8080:8080"
       - "443:443"
     volumes:
       - ./nginx/config:/etc/nginx/
       - ./nginx/ssl:/etc/nginx/ssl/
     depends_on:
-      - api
+      - api-1
+      - api-2
+      - api-3
 
   ui:
     build:
