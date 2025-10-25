@@ -29,7 +29,7 @@ public class Oauth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String accessToken = jwtService.genereateAccessToken(oidcUser.getEmail(), oidcUser.getAuthorities());
         String refreshToken = jwtService.genereateRefreshToken(oidcUser.getEmail(), oidcUser.getAuthorities());
 
-        response.sendRedirect(String.format("http://localhost:4200/auth/oauth/callback?accessToken=%s&refreshToken=%s",
+        response.sendRedirect(String.format("http://localhost:4200/auth/oauth2/callback?accessToken=%s&refreshToken=%s",
                 accessToken, refreshToken));
 
     }
