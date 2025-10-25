@@ -4,13 +4,9 @@ import java.util.Arrays;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -25,59 +21,58 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtFilter jwtFilter;
+        private final JwtFilter jwtFilter;
 
-    private static final String[] AUTH_WHITELIST = {
-            "/auth/**",
-            "/swagger-resources/**",
-            "/swagger-ui/**",
-            "/v3/api-docs/**",
-            "/v2/api-docs",
-            "/swagger-ui.html"
-    };
+        private final AccountOidcUserService oidcUserService;
+        private final Oauth2LoginSuccessHandler oauth2LoginSuccessHandler;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        private static final String[] AUTH_WHITELIST = {
+                        "/auth/**",
+                        "/swagger-resources/**",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/v2/api-docs",
+                        "/swagger-ui.html"
+        };
 
-        // disable csrf for postman testing
-        http.csrf(csrf -> csrf.disable());
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        // filter request
-        http
-                .authorizeHttpRequests(
-                        req -> req.requestMatchers(AUTH_WHITELIST).permitAll()
-                                .anyRequest().authenticated())
+                // disable csrf for postman testing
+                http.csrf(csrf -> csrf.disable());
 
-                // cors
-                .cors((cors) -> cors
-                        .configurationSource(apiConfigurationSource()))
+                // filter request
+                http
+                                .authorizeHttpRequests(
+                                                req -> req.requestMatchers(AUTH_WHITELIST).permitAll()
+                                                                .anyRequest().authenticated())
 
-                // filter
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                // session
-                .sessionManagement(ss -> ss.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                                // cors
+                                .cors((cors) -> cors
+                                                .configurationSource(apiConfigurationSource()))
 
-        return http.build();
-    }
+                                // filter
+                                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                                // session
+                                .sessionManagement(ss -> ss.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-            throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+                                // oauth2
+                                .oauth2Login(
+                                                login -> login
+                                                                .userInfoEndpoint(e -> e
+                                                                                .oidcUserService(oidcUserService))
+                                                                .successHandler(oauth2LoginSuccessHandler));
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+                return http.build();
+        }
 
-    UrlBasedCorsConfigurationSource apiConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("*"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+        UrlBasedCorsConfigurationSource apiConfigurationSource() {
+                CorsConfiguration configuration = new CorsConfiguration();
+                configuration.setAllowedOrigins(Arrays.asList("*"));
+                configuration.setAllowedMethods(Arrays.asList("*"));
+                configuration.setAllowedHeaders(Arrays.asList("*"));
+                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+                source.registerCorsConfiguration("/**", configuration);
+                return source;
+        }
 }

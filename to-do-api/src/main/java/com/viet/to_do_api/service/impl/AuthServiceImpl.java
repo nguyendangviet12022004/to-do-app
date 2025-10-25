@@ -1,13 +1,18 @@
 package com.viet.to_do_api.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 
+import com.viet.to_do_api.config.security.AccountOidcUser;
 import com.viet.to_do_api.constant.AuthorityName;
 import com.viet.to_do_api.constant.TokenCodeType;
 import com.viet.to_do_api.dto.auth.request.ActivateAccountRequest;
