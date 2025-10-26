@@ -54,7 +54,8 @@ public class SecurityConfig {
                                 // filter
                                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                                 // session
-                                .sessionManagement(ss -> ss.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                .sessionManagement(ss -> ss
+                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                                 // oauth2
                                 .oauth2Login(
