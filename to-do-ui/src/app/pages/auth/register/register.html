@@ -1,0 +1,72 @@
+<div class="container-fluid">
+  <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+    <!--email-->
+    <div class="mb-3">
+      <label for="email" class="form-label">Email address</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        aria-describedby="emailHelp"
+        name="email"
+        formControlName="email"
+      />
+      <div id="emailHelp" class="form-text">
+        We'll never share your email with anyone else.
+      </div>
+      @if (email.invalid && (email.touched || email.dirty)) { @if
+      (email.hasError("required")) {
+      <p class="text-danger">The email is reuqired</p>
+      } @else if (email.hasError("email")) {
+      <p class="text-danger">Invalid email format</p>
+      } @else if(email.hasError("emailexists")){
+      <p class="text-danger">This email is exists</p>
+      }}
+    </div>
+
+    <!--password-->
+    <div formGroupName="password">
+      <!--new passowrd-->
+      <div class="mb-3">
+        <label for="newPassword" class="form-label">New Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="newPassword"
+          name="newPassword"
+          formControlName="newPassword"
+        />
+        @if (newPassword.invalid && (newPassword.touched || newPassword.dirty))
+        { @if (newPassword.hasError("required")) {
+        <p class="text-danger">The new password is reuqired</p>
+        } @else if (newPassword.hasError("minlength")) {
+        <p class="text-danger">The min length is 8</p>
+        } }
+      </div>
+
+      <!--confirm password-->
+      <div class="mb-3">
+        <label for="confirmPassword" class="form-label">Confirm Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="confirmPassword"
+          name="confirmPassword"
+          formControlName="confirmPassword"
+        />
+        @if (password.invalid && (password.touched || password.dirty)){ @if
+        (password.hasError("passwordsmatch")) {
+        <p class="text-danger">Password not match</p>
+        } }
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="registerForm.invalid"
+    >
+      Submit
+    </button>
+  </form>
+</div>

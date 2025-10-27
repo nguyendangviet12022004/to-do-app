@@ -1,0 +1,58 @@
+<div class="container-fluid">
+  @if (errorMessage()) {
+  <p class="text-danger">{{ errorMessage() }}</p>
+  }
+  <form #loginForm="ngForm" (ngSubmit)="onLogin()">
+    <div class="mb-3">
+      <label for="" class="form-label">Email address</label>
+      <input
+        type="email"
+        class="form-control"
+        id="exampleInputEmail1"
+        aria-describedby="emailHelp"
+        name="email"
+        [(ngModel)]="loginRequest.email"
+        required
+        email
+        #email="ngModel"
+      />
+      <div id="emailHelp" class="form-text">
+        We'll never share your email with anyone else.
+      </div>
+
+      @if (email.invalid && (email.dirty || email.touched)){
+      @if(email.hasError('required')){
+      <p class="text-danger">Email is required</p>
+      } @if(email.hasError('email')){
+      <p class="text-danger">Email is invalid</p>
+      } }
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="exampleInputPassword1"
+        name="password"
+        [(ngModel)]="loginRequest.password"
+        required
+        #password="ngModel"
+      />
+      @if (password.invalid && (password.dirty || password.touched)){
+      @if(password.hasError('required')){
+      <p class="text-danger">Password is required</p>
+      } }
+    </div>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="loginForm.invalid"
+    >
+      Submit
+    </button>
+  </form>
+  <a [href]="oauth2LoginUrl">
+    <img src="7611770.png" alt="Google Logo" width="30px" />
+    <p>Login with Google</p>
+  </a>
+</div>
