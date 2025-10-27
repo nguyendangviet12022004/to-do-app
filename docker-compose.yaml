@@ -23,38 +23,38 @@ services:
       - db
       - mail
 
-  # api-2:
-  #   build: ./to-do-api
-  #   container_name: to-do-api-2
-  #   env_file: api.env
-  #   depends_on:
-  #     - db
-  #     - mail
+  api-2:
+    build: ./to-do-api
+    container_name: to-do-api-2
+    env_file: api.env
+    depends_on:
+      - db
+      - mail
 
-  # api-3:
-  #   build: ./to-do-api
-  #   container_name: to-do-api-3
-  #   env_file: api.env
-  #   depends_on:
-  #     - db
-  #     - mail
+  api-3:
+    build: ./to-do-api
+    container_name: to-do-api-3
+    env_file: api.env
+    depends_on:
+      - db
+      - mail
 
   nginx:
     image: nginx:latest
     container_name: to-do-nginx
     ports:
-      - "8080:8080"
+      # - "8080:8080"
       - "443:443"
     volumes:
       - ./nginx/config:/etc/nginx/
       - ./nginx/ssl:/etc/nginx/ssl/
 
-  # ui:
-  #   build:
-  #     context: to-do-ui/.
-  #   env_file:
-  #     - ui.env
-  #   ports:
-  #     - "8080:8080"
+  ui:
+    build:
+      context: to-do-ui/.
+    env_file:
+      - ui.env
+    ports:
+      - "8080:8080"
 volumes:
   data:

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { catchError, of, switchMap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,9 @@ export class Login {
 
   private authService = inject(AuthService);
   private router = inject(Router);
+  private apiUrl = environment.apiUrl;
+  
+  oauth2LoginUrl = `${this.apiUrl}/oauth2/authorization/google`
 
   loginRequest: LoginRequest = {
     email: "",
