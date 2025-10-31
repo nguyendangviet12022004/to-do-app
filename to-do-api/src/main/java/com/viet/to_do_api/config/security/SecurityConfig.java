@@ -62,7 +62,12 @@ public class SecurityConfig {
                                                 login -> login
                                                                 .userInfoEndpoint(e -> e
                                                                                 .oidcUserService(oidcUserService))
-                                                                .successHandler(oauth2LoginSuccessHandler));
+                                                                .successHandler(oauth2LoginSuccessHandler))
+
+                                // exception
+                                .exceptionHandling(ex -> ex
+                                                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                                                .accessDeniedHandler(new CustomAccessDeniedHandler()));
 
                 return http.build();
         }
