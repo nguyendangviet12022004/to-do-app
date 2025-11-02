@@ -1,4 +1,4 @@
-package com.viet.to_do_api.entity;
+package com.viet.to_do_api.entity.auth;
 
 import java.time.LocalDateTime;
 

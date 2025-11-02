@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.viet.to_do_api.constant.AuthorityName;
-import com.viet.to_do_api.entity.Authority;
+import com.viet.to_do_api.entity.auth.Authority;
 
 @Repository
 public interface AuthorityRepository extends JpaRepository<Authority, Integer> {

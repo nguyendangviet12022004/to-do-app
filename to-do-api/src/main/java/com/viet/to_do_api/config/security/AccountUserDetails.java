@@ -6,7 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.viet.to_do_api.entity.Account;
+import com.viet.to_do_api.entity.auth.Account;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

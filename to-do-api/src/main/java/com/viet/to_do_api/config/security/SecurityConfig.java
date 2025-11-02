@@ -27,6 +27,7 @@ public class SecurityConfig {
         private final Oauth2LoginSuccessHandler oauth2LoginSuccessHandler;
 
         private static final String[] AUTH_WHITELIST = {
+                        "test/**",
                         "/auth/**",
                         "/swagger-resources/**",
                         "/swagger-ui/**",
@@ -64,7 +65,6 @@ public class SecurityConfig {
                                                                                 .oidcUserService(oidcUserService))
                                                                 .successHandler(oauth2LoginSuccessHandler))
 
-                                // exception
                                 .exceptionHandling(ex -> ex
                                                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                                                 .accessDeniedHandler(new CustomAccessDeniedHandler()));

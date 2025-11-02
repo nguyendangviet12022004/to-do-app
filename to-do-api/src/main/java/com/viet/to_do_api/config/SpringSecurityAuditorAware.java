@@ -1,0 +1,25 @@
+package com.viet.to_do_api.config;
+
+import java.util.Optional;
+
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.lang.NonNull;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import com.viet.to_do_api.entity.auth.Account;
+
+public class SpringSecurityAuditorAware implements AuditorAware<Account> {
+
+    @Override
+    @NonNull
+    public Optional<Account> getCurrentAuditor() {
+        return Optional.ofNullable(SecurityContextHolder.getContext())
+                .map(SecurityContext::getAuthentication)
+                .filter(Authentication::isAuthenticated)
+                .map(Authentication::getPrincipal)
+                .map(Account.class::cast);
+    }
+
+}

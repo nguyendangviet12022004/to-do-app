@@ -1,18 +1,13 @@
 package com.viet.to_do_api.service.impl;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.oidc.OidcIdToken;
-import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 
-import com.viet.to_do_api.config.security.AccountOidcUser;
 import com.viet.to_do_api.constant.AuthorityName;
 import com.viet.to_do_api.constant.TokenCodeType;
 import com.viet.to_do_api.dto.auth.request.ActivateAccountRequest;
@@ -21,11 +16,11 @@ import com.viet.to_do_api.dto.auth.request.RefreshTokenRequest;
 import com.viet.to_do_api.dto.auth.request.RegisterRequest;
 import com.viet.to_do_api.dto.auth.response.JwtResponse;
 import com.viet.to_do_api.dto.auth.response.TokenResponse;
-import com.viet.to_do_api.entity.Account;
-import com.viet.to_do_api.entity.Authority;
+import com.viet.to_do_api.entity.auth.Account;
+import com.viet.to_do_api.entity.auth.Authority;
 import com.viet.to_do_api.exception.auth.EmailExistsException;
 import com.viet.to_do_api.exception.auth.EmailNotFoundException;
-import com.viet.to_do_api.mapper.AccountMapper;
+import com.viet.to_do_api.mapper.auth.AccountMapper;
 import com.viet.to_do_api.repository.AccountRepository;
 import com.viet.to_do_api.repository.AuthorityRepository;
 import com.viet.to_do_api.service.AuthService;

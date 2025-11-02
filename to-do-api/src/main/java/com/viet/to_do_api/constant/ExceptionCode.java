@@ -10,4 +10,6 @@ public enum ExceptionCode {
     BAD_CREDENTIALS,
     TOKEN_INVALID,
     AUTHENTICATION_ERROR,
+    FORBIDDEN,
+    UNAUTHORIZED
 }

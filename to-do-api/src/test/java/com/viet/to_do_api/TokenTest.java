@@ -13,7 +13,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.viet.to_do_api.constant.TokenCodeType;
-import com.viet.to_do_api.entity.Token;
+import com.viet.to_do_api.entity.auth.Token;
 import com.viet.to_do_api.repository.TokenRepository;
 import com.viet.to_do_api.service.impl.TokenServiceImpl;
 

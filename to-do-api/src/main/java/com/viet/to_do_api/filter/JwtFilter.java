@@ -71,6 +71,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 Authentication authentication = jwtService.extractAuthentication(accessToken);
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                doFilter(request, response, filterChain);
             } catch (ExpiredJwtException ex) {
                 writeErrorResponse(response, request, "JWT token expired", ExceptionCode.TOKEN_EXPIRED,
                         HttpStatus.UNAUTHORIZED);
@@ -85,9 +86,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 return;
             }
 
-        } else
-
-        {
+        } else {
             doFilter(request, response, filterChain);
         }
 

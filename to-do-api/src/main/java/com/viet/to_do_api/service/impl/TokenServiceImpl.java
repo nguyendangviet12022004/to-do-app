@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.viet.to_do_api.constant.TokenCodeType;
 import com.viet.to_do_api.dto.auth.response.TokenResponse;
-import com.viet.to_do_api.entity.Account;
-import com.viet.to_do_api.entity.Token;
+import com.viet.to_do_api.entity.auth.Account;
+import com.viet.to_do_api.entity.auth.Token;
 import com.viet.to_do_api.exception.auth.TokenExpiredException;
 import com.viet.to_do_api.exception.auth.TokenNotExistsException;
-import com.viet.to_do_api.mapper.TokenMapper;
+import com.viet.to_do_api.mapper.auth.TokenMapper;
 import com.viet.to_do_api.repository.TokenRepository;
 import com.viet.to_do_api.service.TokenService;
 

@@ -1,10 +1,10 @@
-package com.viet.to_do_api.mapper;
+package com.viet.to_do_api.mapper.auth;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.viet.to_do_api.dto.auth.request.RegisterRequest;
-import com.viet.to_do_api.entity.Account;
+import com.viet.to_do_api.entity.auth.Account;
 
 @Mapper(componentModel = "spring")
 public interface AccountMapper {

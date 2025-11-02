@@ -12,8 +12,8 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 
 import com.viet.to_do_api.constant.AuthorityName;
-import com.viet.to_do_api.entity.Account;
-import com.viet.to_do_api.entity.Authority;
+import com.viet.to_do_api.entity.auth.Account;
+import com.viet.to_do_api.entity.auth.Authority;
 import com.viet.to_do_api.repository.AccountRepository;
 import com.viet.to_do_api.repository.AuthorityRepository;
 

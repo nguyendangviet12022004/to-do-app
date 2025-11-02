@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
-import com.viet.to_do_api.entity.Account;
+import com.viet.to_do_api.entity.auth.Account;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

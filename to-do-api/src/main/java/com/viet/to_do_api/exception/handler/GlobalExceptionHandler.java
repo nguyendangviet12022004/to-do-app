@@ -24,7 +24,10 @@ import com.viet.to_do_api.exception.auth.EmailExistsException;
 import com.viet.to_do_api.exception.auth.TokenExpiredException;
 import com.viet.to_do_api.exception.auth.TokenNotExistsException;
 
+import lombok.NoArgsConstructor;
+
 @RestControllerAdvice
+@NoArgsConstructor
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         private ExceptionResponse getExceptionResponse(Exception ex, WebRequest request) {

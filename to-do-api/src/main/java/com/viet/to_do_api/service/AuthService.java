@@ -1,8 +1,5 @@
 package com.viet.to_do_api.service;
 
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-
-import com.viet.to_do_api.config.security.AccountOidcUser;
 import com.viet.to_do_api.dto.auth.request.ActivateAccountRequest;
 import com.viet.to_do_api.dto.auth.request.LoginRequest;
 import com.viet.to_do_api.dto.auth.request.RefreshTokenRequest;
