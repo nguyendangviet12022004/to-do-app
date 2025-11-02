@@ -1,5 +1,6 @@
 package com.viet.to_do_api.service.impl;
 
+import java.security.Principal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.function.Function;
@@ -14,6 +15,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
 
+import com.viet.to_do_api.config.security.AccountOidcUser;
+import com.viet.to_do_api.config.security.AccountUserDetails;
+import com.viet.to_do_api.entity.auth.Account;
 import com.viet.to_do_api.service.JwtService;
 
 import io.jsonwebtoken.Claims;
@@ -104,8 +108,16 @@ public class JwtServiceImpl implements JwtService {
 
         String strAuthorities = extractAccessTokenClaim(token, (claims -> claims.get("authorities", String.class)));
 
+        Integer id = extractAccessTokenClaim(token, (claims -> claims.get("id", Integer.class)));
+
         var authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(strAuthorities);
-        return new UsernamePasswordAuthenticationToken(username, "", authorities);
+        AccountUserDetails userDetails = AccountUserDetails.builder()
+                .account(Account.builder()
+                        .id(id)
+                        .email(username)
+                        .build())
+                .build();
+        return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }
 
     @Override
@@ -118,5 +130,39 @@ public class JwtServiceImpl implements JwtService {
         var authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(strAuthorities);
 
         return genereateAccessToken(username, authorities);
+    }
+
+    @Override
+    public String genereateAccessToken(Authentication authentication) {
+        var principal = authentication.getPrincipal();
+
+        int id = 0;
+
+        if (principal instanceof AccountUserDetails) {
+            id = ((AccountUserDetails) principal).getAccount().getId();
+        } else if (principal instanceof AccountOidcUser) {
+            id = ((AccountOidcUser) principal).getAccount().getId();
+        }
+        String strAuthorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        return generateToken(authentication.getName(), accessTokenExpiration, accessTokenSecret, issuer,
+                Jwts.claims().add("authorities", strAuthorities).add("id", id).build());
+    }
+
+    @Override
+    public String genereateRefreshToken(Authentication authentication) {
+        var principal = authentication.getPrincipal();
+
+        int id = 0;
+
+        if (principal instanceof AccountUserDetails) {
+            id = ((AccountUserDetails) principal).getAccount().getId();
+        } else if (principal instanceof AccountOidcUser) {
+            id = ((AccountOidcUser) principal).getAccount().getId();
+        }
+        String strAuthorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        return generateToken(authentication.getName(), refreshTokenExpiration, accessTokenSecret, issuer,
+                Jwts.claims().add("authorities", strAuthorities).add("id", id).build());
     }
 }

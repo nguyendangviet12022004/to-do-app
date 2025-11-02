@@ -16,6 +16,10 @@ public interface JwtService {
 
     public String genereateRefreshToken(String username, Collection<? extends GrantedAuthority> authorities);
 
+    public String genereateAccessToken(Authentication authentication);
+
+    public String genereateRefreshToken(Authentication authentication);
+
     public Claims extractAllClaims(String token, String secretKey);
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver, String secretKey);

@@ -116,11 +116,9 @@ public class AuthServiceImpl implements AuthService {
                 .authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
 
         if (auth.isAuthenticated()) {
-            String accessToken = jwtService.genereateAccessToken(request.email(),
-                    auth.getAuthorities());
+            String accessToken = jwtService.genereateAccessToken(auth);
 
-            String refreshToken = jwtService.genereateRefreshToken(request.email(),
-                    auth.getAuthorities());
+            String refreshToken = jwtService.genereateRefreshToken(auth);
             return new JwtResponse(accessToken, refreshToken);
         }
         return null;
