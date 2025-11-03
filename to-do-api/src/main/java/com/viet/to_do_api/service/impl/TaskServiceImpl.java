@@ -1,13 +1,18 @@
 package com.viet.to_do_api.service.impl;
 
+import java.util.List;
+
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.viet.to_do_api.constant.StatusValue;
 import com.viet.to_do_api.dto.task.TaskDto;
 import com.viet.to_do_api.entity.task.Status;
+import com.viet.to_do_api.entity.task.Task;
 import com.viet.to_do_api.mapper.task.TaskMapper;
 import com.viet.to_do_api.repository.TaskRepository;
 import com.viet.to_do_api.service.TaskService;
+import com.viet.to_do_api.specification.TaskSpecification;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +37,22 @@ public class TaskServiceImpl implements TaskService {
         // save task
         var savedTask = taskRepository.save(task);
         return taskMapper.toDto(savedTask);
+    }
+
+    @Override
+    public List<TaskDto> getTasks(String title, List<StatusValue> status, List<Integer> tagIds,
+            List<Integer> categoryIds, List<Integer> priorities) {
+
+        // specification
+        Specification<Task> spec = TaskSpecification.hasTitle(title)
+                .and(TaskSpecification.hasStatus(status))
+                .and(TaskSpecification.hasTagId(tagIds))
+                .and(TaskSpecification.hasCategoryId(categoryIds))
+                .and(TaskSpecification.hasPriority(priorities));
+
+        return taskRepository.findAll(spec).stream()
+                .map(taskMapper::toDto)
+                .toList();
     }
 
 }
