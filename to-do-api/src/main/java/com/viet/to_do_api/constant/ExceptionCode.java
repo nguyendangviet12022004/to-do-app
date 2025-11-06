@@ -11,5 +11,6 @@ public enum ExceptionCode {
     TOKEN_INVALID,
     AUTHENTICATION_ERROR,
     FORBIDDEN,
-    UNAUTHORIZED
+    UNAUTHORIZED,
+    EXISTS_ERROR,
 }

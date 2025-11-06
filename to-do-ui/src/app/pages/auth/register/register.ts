@@ -1,10 +1,10 @@
-import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RegisterRequest } from '../../../models/auth/register.request';
-import { passwordsMatchValidator } from '../../../validators/passwords-match.validator.directive';
-import { AuthService } from '../../../services/auth.service';
-import { Router } from '@angular/router';
-import { EmailExistsValidator } from '../../../validators/email-exists.validator.directive';
+import {Component, inject} from '@angular/core';
+import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import {RegisterRequest} from '../../../models/auth/register.request';
+import {passwordsMatchValidator} from '../../../validators/passwords-match.validator.directive';
+import {AuthService} from '../../../services/auth.service';
+import {Router} from '@angular/router';
+import {EmailExistsValidator} from '../../../validators/email-exists.validator.directive';
 
 @Component({
   selector: 'app-register',
@@ -21,13 +21,13 @@ export class Register {
 
   errorMessage = ""
 
- 
+
 
   registerForm = this.fb.group({
     email: ["", {
       validators: [Validators.required, Validators.email],
       asyncValidators: [this.emailExistsValidator.validate.bind(this.emailExistsValidator)],
-      updateOn: 'blur'  
+      updateOn: 'blur'
     }],
     password: this.fb.group({
       newPassword: ["",[Validators.required, Validators.minLength(8)]],
@@ -69,6 +69,6 @@ export class Register {
         },
       }
     )
-    
+
   }
 }

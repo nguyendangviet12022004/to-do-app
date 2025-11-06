@@ -1,19 +1,21 @@
 package com.viet.to_do_api.entity.task;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.viet.to_do_api.entity.auth.Account;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
+@EntityListeners(AuditingEntityListener.class)
+
 public class Tag {
 
     @Id
@@ -23,4 +25,8 @@ public class Tag {
     private String title;
 
     private String color;
+
+    @CreatedBy
+    @ManyToOne
+    private Account account;
 }

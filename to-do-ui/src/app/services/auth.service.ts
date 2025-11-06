@@ -1,13 +1,13 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {inject, Injectable, signal} from '@angular/core';
 
-import { RegisterRequest } from '../models/auth/register.request';
-import { Observable } from 'rxjs';
-import { ActivateRequest } from '../models/auth/activate.request';
-import { LoginRequest } from '../models/auth/login.request';
-import { JwtResponse } from '../models/auth/login.response';
-import { RefreshTokenRequest } from '../models/auth/refresh-token.request';
-import { environment } from '../../environments/environment';
+import {RegisterRequest} from '../models/auth/register.request';
+import {Observable} from 'rxjs';
+import {ActivateRequest} from '../models/auth/activate.request';
+import {LoginRequest} from '../models/auth/login.request';
+import {JwtResponse} from '../models/auth/login.response';
+import {RefreshTokenRequest} from '../models/auth/refresh-token.request';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -55,7 +55,7 @@ export class AuthService {
   refresh(){
     return this.httpClient.post<RefreshTokenRequest>(`${environment.apiUrl}/auth/refresh-token`, {refreshToken: this.refreshToken})
   }
-  
+
 
   saveTokens(accessToken: string, refreshToken: string): void {
     this.accessTokenSignal.set(accessToken);
@@ -75,5 +75,5 @@ export class AuthService {
   isAuthenticated(){
     return !!this.accessTokenSignal();
   }
-  
+
 }

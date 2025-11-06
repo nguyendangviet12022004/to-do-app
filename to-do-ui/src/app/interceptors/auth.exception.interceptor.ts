@@ -1,10 +1,9 @@
-import { HttpEvent, HttpHandlerFn, HttpRequest } from "@angular/common/http";
-import { inject } from "@angular/core";
-import { catchError, Observable, switchMap, throwError } from "rxjs";
-import { AuthService } from "../services/auth.service";
-import { errorCode } from "../constants/ErrorCode";
-import { Router } from "@angular/router";
-
+import {HttpEvent, HttpHandlerFn, HttpRequest} from "@angular/common/http";
+import {inject} from "@angular/core";
+import {catchError, Observable, switchMap, throwError} from "rxjs";
+import {AuthService} from "../services/auth.service";
+import {errorCode} from "../constants/ErrorCode";
+import {Router} from "@angular/router";
 
 
 export function AuthExceptionInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
@@ -40,7 +39,7 @@ export function AuthExceptionInterceptor(req: HttpRequest<unknown>, next: HttpHa
                     )
                 default:
                     return throwError(() => error)
-                
+
             }
     }));
 }

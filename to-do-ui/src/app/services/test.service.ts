@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
+import {HttpClient} from '@angular/common/http';
+import {inject, Injectable} from '@angular/core';
+import {environment} from '../../environments/environment';
 
 
 @Injectable({
@@ -11,5 +11,5 @@ export class TestService {
 
   request(){
     return this.httpClient.get(`${environment.apiUrl}/test`);
-  } 
+  }
 }

@@ -1,5 +1,6 @@
 package com.viet.to_do_api.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.viet.to_do_api.dto.task.CategoryDto;
@@ -43,8 +44,8 @@ public class CategoryController {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved list of categories")
     })
     @GetMapping
-    public ResponseEntity<List<CategoryDto>> getAllCategories() {
-        return ResponseEntity.ok(categoryService.getAllCategories());
+    public ResponseEntity<List<CategoryDto>> getAllCategories(Authentication authentication) {
+        return ResponseEntity.ok(categoryService.getAllCategories(authentication));
     }
 
 }

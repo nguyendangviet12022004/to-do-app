@@ -1,5 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { TestService } from '../../../services/test.service';
+import {Component, inject, OnInit} from '@angular/core';
+import {TestService} from '../../../services/test.service';
 
 @Component({
   selector: 'app-task-list',

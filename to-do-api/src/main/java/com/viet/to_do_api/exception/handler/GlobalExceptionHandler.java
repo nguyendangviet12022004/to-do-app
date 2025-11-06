@@ -3,6 +3,7 @@ package com.viet.to_do_api.exception.handler;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
+import com.viet.to_do_api.exception.task.ExistsException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -66,6 +67,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 } else if (ex instanceof DisabledException) {
                         response.setStatus(HttpStatus.BAD_REQUEST);
                         response.setCode(ExceptionCode.DISABLED_ACCOUNT);
+
+                // exists title
+                } else if(ex instanceof ExistsException){
+                    response.setStatus(HttpStatus.BAD_REQUEST);
+                    response.setCode(ExceptionCode.EXISTS_ERROR);
                 }
 
                 return response;

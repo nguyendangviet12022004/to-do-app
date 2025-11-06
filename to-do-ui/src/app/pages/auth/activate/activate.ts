@@ -1,9 +1,9 @@
-import { Component, inject, Signal, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { ActivateRequest } from '../../../models/auth/activate.request';
-import { AuthService } from '../../../services/auth.service';
-import { errorCode } from '../../../constants/ErrorCode';
+import {Component, inject, signal} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {ActivateRequest} from '../../../models/auth/activate.request';
+import {AuthService} from '../../../services/auth.service';
+import {errorCode} from '../../../constants/ErrorCode';
 
 
 @Component({
@@ -35,13 +35,13 @@ export class Activate {
     this.authService.activateAcocunt(this.codeRequest).subscribe({
       next: (value) => {
         // to do redirect to login page
-        
+
       },
       error: (err) => {
         console.log(err.error.code)
         switch(err.error.code){
           case errorCode.TOKEN_NOT_EXISTS:
-            
+
             this.errorMessage.set("The activation code is invalid.")
             break;
           case errorCode.TOKEN_EXPIRED:
@@ -61,7 +61,7 @@ export class Activate {
       },
       error: (err) => {
         console.log(err)
-        this.errorMessage.set(err.error.message); 
+        this.errorMessage.set(err.error.message);
       }
     })
   }
