@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: to-do-config-server
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:/home/${USER:viet}/Project/to-do-app/config
