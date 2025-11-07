@@ -49,6 +49,16 @@ services:
       - ./nginx/config:/etc/nginx/
       - ./nginx/ssl:/etc/nginx/ssl/
 
+  config:
+      build:
+        context: ./to-do-config-server
+
+      container_name: to-do-config-server
+      env_file:
+        - to-do-config-server/config.env
+      ports:
+        - "8087:8087"
+
   ui:
     build:
       context: to-do-ui/.
