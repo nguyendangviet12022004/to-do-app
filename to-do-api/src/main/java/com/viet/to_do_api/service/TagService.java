@@ -6,4 +6,6 @@ public interface TagService {
 
     TagDto createNewTag(TagDto tagDto);
 
+    boolean checkExistsTaskByTitle(String title);
+
 }

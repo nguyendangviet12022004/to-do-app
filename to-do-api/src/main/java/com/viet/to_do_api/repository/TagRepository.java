@@ -7,5 +7,5 @@ import com.viet.to_do_api.entity.task.Tag;
 
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Integer> {
-
+    boolean existsByTitle(String title);
 }

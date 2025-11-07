@@ -2,7 +2,7 @@ services:
   db:
     image: mysql
     container_name: to-do-db
-    env_file: db.env
+    env_file: to-do-api/db.env
     ports:
       - "3306:3306"
     volumes:
@@ -15,56 +15,56 @@ services:
       - "1025:1025"
       - "1080:1080"
 
-  api-1:
-    build: ./to-do-api
-    container_name: to-do-api-1
-    env_file: api.env
-    depends_on:
-      - db
-      - mail
+#  api-1:
+#    build: ./to-do-api
+#    container_name: to-do-api-1
+#    env_file: api.env
+#    depends_on:
+#      - db
+#      - mail
 
-  api-2:
-    build: ./to-do-api
-    container_name: to-do-api-2
-    env_file: api.env
-    depends_on:
-      - db
-      - mail
+#  api-2:
+#    build: ./to-do-api
+#    container_name: to-do-api-2
+#    env_file: api.env
+#    depends_on:
+#      - db
+#      - mail
+#
+#  api-3:
+#    build: ./to-do-api
+#    container_name: to-do-api-3
+#    env_file: api.env
+#    depends_on:
+#      - db
+#      - mail
 
-  api-3:
-    build: ./to-do-api
-    container_name: to-do-api-3
-    env_file: api.env
-    depends_on:
-      - db
-      - mail
+#  nginx:
+#    image: nginx:latest
+#    container_name: to-do-nginx
+#    ports:
+#      # - "8080:8080"
+#      - "443:443"
+#    volumes:
+#      - ./nginx/config:/etc/nginx/
+#      - ./nginx/ssl:/etc/nginx/ssl/
 
-  nginx:
-    image: nginx:latest
-    container_name: to-do-nginx
-    ports:
-      # - "8080:8080"
-      - "443:443"
-    volumes:
-      - ./nginx/config:/etc/nginx/
-      - ./nginx/ssl:/etc/nginx/ssl/
+#  config:
+#      build:
+#        context: ./to-do-config-server
+#
+#      container_name: to-do-config-server
+#      env_file:
+#        - to-do-config-server/config.env
+#      ports:
+#        - "8087:8087"
 
-  config:
-      build:
-        context: ./to-do-config-server
-
-      container_name: to-do-config-server
-      env_file:
-        - to-do-config-server/config.env
-      ports:
-        - "8087:8087"
-
-  ui:
-    build:
-      context: to-do-ui/.
-    env_file:
-      - ui.env
-    ports:
-      - "8080:8080"
+#  ui:
+#    build:
+#      context: to-do-ui/.
+#    env_file:
+#      - ui.env
+#    ports:
+#      - "8080:8080"
 volumes:
   data:

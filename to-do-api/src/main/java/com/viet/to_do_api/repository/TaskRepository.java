@@ -8,5 +8,5 @@ import com.viet.to_do_api.entity.task.Task;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Integer>, JpaSpecificationExecutor<Task> {
-
+    boolean existsByTitle(String title);
 }

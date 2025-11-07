@@ -2,6 +2,7 @@ package com.viet.to_do_api.service.impl;
 
 import java.util.List;
 
+import com.viet.to_do_api.exception.task.ExistsException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskDto createTask(TaskDto taskDto) {
+
+        // check exists
+        if(checkExistsTaskByTitle(taskDto.getTitle())) {
+            throw new ExistsException("Title is exists");
+        }
+
         var task = taskMapper.toEntity(taskDto);
 
         // initialize default status
@@ -53,6 +60,11 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.findAll(spec).stream()
                 .map(taskMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public boolean checkExistsTaskByTitle(String title) {
+        return this.taskRepository.existsByTitle(title);
     }
 
 }

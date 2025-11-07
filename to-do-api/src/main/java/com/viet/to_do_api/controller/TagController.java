@@ -1,5 +1,6 @@
 package com.viet.to_do_api.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,7 +30,7 @@ public class TagController {
             @ApiResponse(responseCode = "200", description = "Tag successfully created"),
             @ApiResponse(responseCode = "400", description = "Invalid input data") })
     @PostMapping
-    public ResponseEntity<TagDto> createNewTag(@RequestBody TagDto tagDto) {
+    public ResponseEntity<TagDto> createNewTag(@RequestBody TagDto tagDto, Authentication authentication) {
         return ResponseEntity.ok(tagService.createNewTag(tagDto));
     }
 

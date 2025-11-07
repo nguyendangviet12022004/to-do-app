@@ -6,9 +6,11 @@ import com.viet.to_do_api.constant.StatusValue;
 import com.viet.to_do_api.dto.task.TaskDto;
 
 public interface TaskService {
-    public TaskDto createTask(TaskDto taskDto);
+     TaskDto createTask(TaskDto taskDto);
 
-    public List<TaskDto> getTasks(String title, List<StatusValue> status, List<Integer> tagIds,
+     List<TaskDto> getTasks(String title, List<StatusValue> status, List<Integer> tagIds,
             List<Integer> categoryIds,
             List<Integer> priorities);
+
+     boolean checkExistsTaskByTitle(String title);
 }

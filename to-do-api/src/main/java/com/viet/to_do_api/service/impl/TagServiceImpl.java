@@ -1,5 +1,6 @@
 package com.viet.to_do_api.service.impl;
 
+import com.viet.to_do_api.exception.task.ExistsException;
 import org.springframework.stereotype.Service;
 
 import com.viet.to_do_api.dto.task.TagDto;
@@ -19,8 +20,18 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public TagDto createNewTag(TagDto tagDto) {
+
+        if(checkExistsTaskByTitle(tagDto.getTitle())) {
+            throw new ExistsException("Title already exists");
+        }
+
         Tag tag = tagMapper.toEntity(tagDto);
         tag = tagRepository.save(tag);
         return tagMapper.toDto(tag);
+    }
+
+    @Override
+    public boolean checkExistsTaskByTitle(String title) {
+        return this.tagRepository.existsByTitle(title);
     }
 }
