@@ -2,9 +2,19 @@ spring:
   application:
     name: to-do-config-server
   profiles:
-    active: native
+    active: git
   cloud:
     config:
       server:
         native:
-          search-locations: file:/home/${USER:viet}/Project/to-do-app/config
+          search-locations: file:/home/${USER:viet}/Project/to-do-app-config
+        git:
+          clone-on-start: true
+          force-pull: true
+          timeout: 5
+          uri: https://github.com/nguyendangviet12022004/to-do-app-config.git
+          username: nguyendangviet12022004
+          password: ${GITHUB_TOKEN:GITHUB_TOKEN}
+          default-label: main
+server:
+  port: 8087
