@@ -6,15 +6,27 @@ spring:
   cloud:
     config:
       server:
-        native:
-          search-locations: file:/home/${USER:viet}/Project/to-do-app-config
+        #local
+#        native:
+#          search-locations: file:/home/${USER:viet}/Project/to-do-app-config
+        # git
         git:
           clone-on-start: true
           force-pull: true
           timeout: 5
-          uri: https://github.com/nguyendangviet12022004/to-do-app-config.git
-          username: nguyendangviet12022004
+          uri: ${GITHUB_URL:https://github.com/nguyendangviet12022004/to-do-app-config.git}
+          username: ${GITHUB_USERNAME:nguyendangviet12022004}
           password: ${GITHUB_TOKEN:GITHUB_TOKEN}
           default-label: main
+
+#encrypt
+encrypt:
+  keyStore:
+    location: classpath:/server.jks
+    password: ${ENCRYPT_KEY_STORE_PASSWORD:letMeIn}
+    alias: ${ENCRYPT_KEY_STORE_ALIAS:serverKey}
+    secret: ${ENCRYPT_KEY_STORE_SECRET:letMeIn}
+
+
 server:
   port: 8087
