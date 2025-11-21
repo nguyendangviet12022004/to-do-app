@@ -27,10 +27,10 @@ public class Oauth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
 
-        AccountOidcUser oidcUser = (AccountOidcUser) authentication.getPrincipal();
+//        AccountOidcUser oidcUser = (AccountOidcUser) authentication.getPrincipal();
 
-        String accessToken = jwtService.genereateAccessToken(oidcUser.getEmail(), oidcUser.getAuthorities());
-        String refreshToken = jwtService.genereateRefreshToken(oidcUser.getEmail(), oidcUser.getAuthorities());
+        String accessToken = jwtService.genereateAccessToken(authentication);
+        String refreshToken = jwtService.genereateRefreshToken(authentication);
 
         String uiUrl = environment.getProperty("ui.url");
         if (StringUtil.isNullOrEmpty(uiUrl))

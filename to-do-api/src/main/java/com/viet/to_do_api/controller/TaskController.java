@@ -42,4 +42,8 @@ public class TaskController {
         return ResponseEntity.ok(taskService.getTasks(title, status, tagIds, categoryIds, priorities));
     }
 
+    @GetMapping("check-exists-title")
+    public ResponseEntity<Boolean> checkExistsTitle(@RequestParam String title) {
+        return ResponseEntity.ok(taskService.checkExistsTaskByTitle(title));
+    }
 }

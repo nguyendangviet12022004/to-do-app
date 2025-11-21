@@ -64,6 +64,7 @@ public class JwtServiceImpl implements JwtService {
     public String genereateAccessToken(String username,
             Collection<? extends GrantedAuthority> authorities) {
 
+
         String strAuthorities = authorities.stream().map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
         return generateToken(username, accessTokenExpiration, accessTokenSecret, issuer,

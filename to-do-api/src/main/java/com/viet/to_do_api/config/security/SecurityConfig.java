@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -27,20 +28,22 @@ public class SecurityConfig {
         private final Oauth2LoginSuccessHandler oauth2LoginSuccessHandler;
 
         private static final String[] AUTH_WHITELIST = {
+                        "/pay-os/**",
                         "test/**",
                         "/auth/**",
                         "/swagger-resources/**",
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
                         "/v2/api-docs",
-                        "/swagger-ui.html"
+                        "/swagger-ui.html",
+                        "/actuator/**"
         };
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
                 // disable csrf for postman testing
-                http.csrf(csrf -> csrf.disable());
+                http.csrf(AbstractHttpConfigurer::disable);
 
                 // filter request
                 http

@@ -3,6 +3,13 @@ spring:
     name: to-do-config-server
   profiles:
     active: git
+  #rabbitmq
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:user}
+    password: ${RABBITMQ_PASSWORD:password}
+
   cloud:
     config:
       server:
@@ -30,3 +37,9 @@ encrypt:
 
 server:
   port: 8087
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

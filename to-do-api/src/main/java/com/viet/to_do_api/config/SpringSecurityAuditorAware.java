@@ -2,6 +2,8 @@ package com.viet.to_do_api.config;
 
 import java.util.Optional;
 
+import com.viet.to_do_api.repository.AccountRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;

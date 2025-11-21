@@ -10,7 +10,7 @@ COPY src ./src
 
 RUN mvn package -DskipTests
 
-FROM openjdk:21-jdk-slim  AS runtime
+FROM amazoncorretto:21.0.2-alpine3.19  AS runtime
 
 WORKDIR /app
 
