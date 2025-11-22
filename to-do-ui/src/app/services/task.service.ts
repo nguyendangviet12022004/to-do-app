@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { CategoryDTO } from '../models/task/category.dto';
@@ -11,8 +11,21 @@ import { TaskDTO } from '../models/task/task.dto';
 export class TaskService {
   private readonly httpClient = inject(HttpClient)
 
-  getAllTasks() {
-    return this.httpClient.get(`${environment.apiUrl}/task`);
+  getTasks(
+    status: string[] = [], 
+    tagIds: number[] = [], 
+    categoryIds: number[] = [],
+    priorities: number[] = []) {
+
+
+    return this.httpClient.get<TaskDTO[]>(`${environment.apiUrl}/task`, {
+      params: {
+        status: status,
+        tagIds: tagIds,
+        categoryIds: categoryIds,
+        priorities: priorities
+      }
+    });
   }
   
   getAllCategory(){

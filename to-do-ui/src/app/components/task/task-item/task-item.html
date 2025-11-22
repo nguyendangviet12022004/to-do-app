@@ -1,1 +1,24 @@
-<p>task-item works!</p>
+<!-- <div class="d-flex align-items-center mb-2">
+  <div>{{ task().title }}</div>
+  <div>{{ task().currentStatus?.value }}</div>
+  <div>{{ task().priority }}</div>
+</div> -->
+
+<div class="card my-3">
+  <div class="card-header">
+    @if (task().currentStatus?.value == StatusValue.IN_PROGRESS) {
+    <span class="badge bg-warning text-dark">{{
+      task().currentStatus?.value
+    }}</span>
+    } @else if (task().currentStatus?.value == StatusValue.DONE) {
+    <span class="badge bg-success">{{ task().currentStatus?.value }}</span>
+    } @else {
+    <span class="badge bg-secondary">{{ task().currentStatus?.value }}</span>
+    }
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">{{ task().currentStatus?.value }}</h5>
+    <p class="card-text">{{ task().description }}</p>
+    <a href="#" class="btn btn-primary">{{ task().currentStatus?.value }}</a>
+  </div>
+</div>
