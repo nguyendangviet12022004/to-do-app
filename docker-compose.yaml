@@ -25,6 +25,17 @@ services:
     ports:
       - "8087:8087"
 
+  redis:
+    image: redis:latest
+    container_name: to-do-redis
+    ports:
+      - "6379:6379"
+
+  redis-insight:
+    image: redis/redisinsight:latest
+    container_name: to-do-redis-insight
+    ports:
+      - "5540:5540"
   api-1:
     build: ./to-do-api
     container_name: to-do-api-1

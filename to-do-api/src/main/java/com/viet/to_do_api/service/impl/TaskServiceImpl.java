@@ -3,6 +3,8 @@ package com.viet.to_do_api.service.impl;
 import java.util.List;
 
 import com.viet.to_do_api.exception.task.ExistsException;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
 
+    @CacheEvict(value = "tasks", allEntries = true)
     @Override
     public TaskDto createTask(TaskDto taskDto) {
 
@@ -46,6 +49,8 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toDto(savedTask);
     }
 
+
+    @Cacheable(value = "tasks", keyGenerator = "customKeyGenerator")
     @Override
     public List<TaskDto> getTasks(String title, List<StatusValue> status, List<Integer> tagIds,
             List<Integer> categoryIds, List<Integer> priorities) {
