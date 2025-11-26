@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { TaskDTO } from '../../../models/task/task.dto';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { beforeTodayValidator } from '../../../validators/before-today.validator.directive';
@@ -14,14 +14,14 @@ import { TaskTitleExistsValidator } from '../../../validators/task-title-exists.
   templateUrl: './task-input.html',
   styleUrl: './task-input.css'
 })
-export class TaskInput {
+export class TaskInput implements  OnChanges{
 
   private readonly taskService = inject(TaskService)
   private readonly taskTitleExistsValidator = inject(TaskTitleExistsValidator)
-  categories: CategoryDTO[] = [];
+  categories = input<CategoryDTO[]>([]) ;
+  tags = input<TagDTO[]>([]) ;
   private readonly cdr = inject(ChangeDetectorRef);
 
-  tags: TagDTO[] = [];
 
 
   task: TaskDTO = {
@@ -33,18 +33,15 @@ export class TaskInput {
     priority: 2,
   };
 
-  constructor() {
-    forkJoin({
-      categoryList: this.taskService.getAllCategory(),
-      tagList: this.taskService.getAllTag()}
-    ).subscribe(({categoryList, tagList}) => {
-      this.categories = categoryList;
-      this.tags = tagList;
+  
 
-      const tagFormArray = this.taskForm.get('tagIds') as FormArray;
-      this.tags.forEach(() => tagFormArray.push(new FormControl(false)));
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['tags'] && !changes['tags'].firstChange) {
+      const tagFormArray = this.tagIds;
+      tagFormArray.clear();
+      this.tags().forEach(() => tagFormArray.push(new FormControl(false)));
       this.cdr.detectChanges();
-    });
+    }
   }
 
   // task input form
@@ -84,7 +81,7 @@ export class TaskInput {
         id: formValue.categoryId || undefined
       }
 
-      this.task.tags =  this.tagIds.controls.map((control, i) => control.value ? {id: this.tags[i].id} : null).filter(v => v !== null) as TagDTO[];
+      this.task.tags =  this.tagIds.controls.map((control, i) => control.value ? {id: this.tags()[i].id} : null).filter(v => v !== null) as TagDTO[];
       this.task.priority = formValue.priority || 2;
 
       this.taskService.createTask(this.task).subscribe({

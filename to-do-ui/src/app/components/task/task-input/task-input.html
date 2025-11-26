@@ -50,15 +50,17 @@
     <div class="mb-3">
       <label for="category" class="form-label">Category</label>
       <select class="form-select" id="category" formControlName="categoryId">
-        @for (category of categories; track category.id) {
+        @for (category of categories(); track category.id) {
         <option [value]="category.id">{{ category.title }}</option>
         }
       </select>
     </div>
 
     <!--Tags-->
+    @if(tags().length > 0){
+    <label class="form-label">Tags</label>
     <div formArrayName="tagIds" class="mb-3">
-      @for (tag of tags; track $index; let i = $index){
+      @for (tag of tags(); track $index; let i = $index){
       <div class="mb-3">
         <div class="form-check">
           <input
@@ -74,6 +76,8 @@
       </div>
       }
     </div>
+    }
+
     <!--Priority-->
     <div class="mb-3">
       <label for="priority" class="form-label">Priority</label>

@@ -13,6 +13,9 @@ RUN mvn package -DskipTests
 
 FROM amazoncorretto:21.0.2-alpine3.19 as RUN
 
+RUN apk --no-cache add bash curl
+
+
 WORKDIR /app
 
 COPY --from=BUILD /build/target/*.jar ./app.jar

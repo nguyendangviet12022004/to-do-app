@@ -18,10 +18,18 @@ services:
   config:
     build:
       context: ./to-do-config-server
-
     container_name: to-do-config-server
     env_file:
       - to-do-config-server/config.env
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8087/actuator/health/readiness | grep UP || exit 1"
+      start_period: 20s
+      interval: 15s
+      timeout: 10s
+      retries: 10
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
     ports:
       - "8087:8087"
 
@@ -36,6 +44,7 @@ services:
     container_name: to-do-redis-insight
     ports:
       - "5540:5540"
+
   api-1:
     build: ./to-do-api
     container_name: to-do-api-1
@@ -73,11 +82,11 @@ services:
       - ./nginx/config:/etc/nginx/
       - ./nginx/ssl:/etc/nginx/ssl/
 
-
-
   rabbitmq:
     image: rabbitmq:4-management
     container_name: to-do-rabbitmq
+    healthcheck:
+      test: rabbitmq-diagnostics check_running
     env_file:
       - to-do-api/rabbitmq.env
     ports:

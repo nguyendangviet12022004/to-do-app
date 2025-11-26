@@ -18,18 +18,12 @@ public class SpringSecurityAuditorAware implements AuditorAware<Account> {
     @Override
     @NonNull
     public Optional<Account> getCurrentAuditor() {
-        var opt = Optional.ofNullable(SecurityContextHolder.getContext())
+        return Optional.ofNullable(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
                 .filter(Authentication::isAuthenticated)
                 .map(Authentication::getPrincipal)
                 .map(AccountUserDetails.class::cast)
                 .map(AccountUserDetails::getAccount);
-
-        if (opt.isPresent()) {
-            return opt;
-        } else {
-            return Optional.empty();
-        }
     }
 
 }
