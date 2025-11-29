@@ -7,6 +7,8 @@ services:
       - "3306:3306"
     volumes:
       - data:/var/lib/mysql
+    healthcheck:
+      test: "mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD"
 
   mail:
     image: maildev/maildev
@@ -50,9 +52,13 @@ services:
     container_name: to-do-api-1
     env_file: to-do-api/api.env
     depends_on:
-      - db
-      - mail
-      - config
+      config:
+          condition: service_healthy
+      db:
+        condition: service_healthy
+      mail:
+        condition: service_healthy
+
     ports:
       - "8080:8080"
 
@@ -93,12 +99,12 @@ services:
       - "5672:5672"
       - "15672:15672"
 
-  ui:
-    build:
-      context: to-do-ui/.
-    env_file:
-      - to-do-ui/ui.env
-    ports:
-      - "8080:8080"
+#  ui:
+#    build:
+#      context: to-do-ui/.
+#    env_file:
+#      - to-do-ui/ui.env
+#    ports:
+#      - "8080:8080"
 volumes:
   data:

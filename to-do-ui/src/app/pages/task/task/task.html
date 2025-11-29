@@ -1,2 +1,11 @@
 <app-task-input [categories]="categories()" [tags]="tags()"></app-task-input>
+
+<br />
+
+<app-task-filter
+  [categories]="categories()"
+  [tags]="tags()"
+  (filterApplied)="onFilter($event)"
+></app-task-filter>
+
 <app-task-list [tasks]="tasks()"></app-task-list>
